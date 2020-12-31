@@ -36,10 +36,10 @@ var fruitfulFunk= {
 	document.getElementById('kadesh-modal-input').addEventListener('keydown', fruitfulFunk.searchBeliefs)
 
 	// event listener to add modals
-	var steps = document.getElementsByClassName('step');
+	/*var steps = document.getElementsByClassName('step');
 	for (var i = 0; i < steps.length; i++ ) {
 		steps[i].addEventListener('click', fruitfulFunk.displayModal)
-	};
+	};*/
 				
 	},
 	collectSteps: function(){
