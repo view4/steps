@@ -1,0 +1,96 @@
+body{
+	margin:0px;	
+}
+div{
+	display: flex;
+	flex-direction: column;
+}
+
+
+.whole{
+	flex-direction: row;
+
+
+}
+
+.links{
+	height:100vh;
+	width: 18%;
+	justify-content: center;
+	align-items: center;
+	font-size:18px;
+	background-color: #2424c2;
+}
+
+.step-link{
+	width:76%;
+	border-bottom: 1px solid lightgray;
+	text-align: center;
+	padding:7px;
+	
+}
+.step-link a{
+	text-decoration: none;
+	color: white;
+	font-weight:500;
+
+}
+.all-steps{
+	width:80%;
+	height:100vh;
+	overflow: auto;
+	flex-flow: wrap;
+	
+}
+.steps{
+	height:100vh;
+	width:100%;
+	border:1px solid gray;
+	align-items: center;
+	position: relative;
+}
+
+.step{
+	height:80%;
+	width:76%;
+	justify-content: center;
+}
+
+.input-buttons{
+	text-align: center;
+	background-color: deepskyblue;
+	height: 36px;
+	width: 144px;
+	border-radius: 36px;
+	color: white;
+	font-family: monospace;
+	font-size: 18px;
+	border-style: unset;
+}
+.label.div{
+	flex-direction: row;
+	font-family: monospace;
+}
+
+.stagename{
+	margin-bottom: 0px;
+}
+
+modal {
+	height: 72vh;
+	width: 72vw;
+	border: 1px solid gray;
+	border-radius: 10px;
+	position: absolute; 
+	background: white;
+	top: 18%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	display: none;
+}
+
+
+
+	
