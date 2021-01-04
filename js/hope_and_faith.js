@@ -1,166 +1,163 @@
-var allSteps=[];
+var allSteps = [];
 
-var steps={
-	kadesh: "",	
-	urchatz: "",
-	karpas: "",
-	yachatz: "",	
-	maggid:"",
-	rachtzah: "",
-	motzi: "",
-	matzah: "",
-	maror: "",
-	korech:"",
-	shulchan_orech: "",
-	tzafun:  "",
-	barech: "",
-	hallel:"",
-	nirtzah: ""
-}
+var steps = {
+  kadesh: "",
+  urchatz: "",
+  karpas: "",
+  yachatz: "",
+  maggid: "",
+  rachtzah: "",
+  motzi: "",
+  matzah: "",
+  maror: "",
+  korech: "",
+  shulchan_orech: "",
+  tzafun: "",
+  barech: "",
+  hallel: "",
+  nirtzah: "",
+};
 
+var fruitfulFunk = {
+  initialising: function () {
+    var fields = document.getElementsByClassName("participatory-fields");
+    var buttons = document.getElementsByClassName("input-buttons");
+    for (var i = 0; i < fields.length; i++) {
+      fields[i].addEventListener("keyup", fruitfulFunk.speaking);
+      buttons[i].addEventListener("click", fruitfulFunk.listening);
+    }
 
+    fruitfulFunk.collectSteps();
+    window.location.href = "#kadesh-page";
+    // Add event listener to kadesh's modal
+    document
+      .getElementById("kadesh")
+      .addEventListener("keydown", fruitfulFunk.searchBeliefs);
 
-var fruitfulFunk= {
-	initialising: function(){
-		var fields=document.getElementsByClassName("participatory-fields");
-		var buttons=document.getElementsByClassName("input-buttons");
-		for (var i=0; i<fields.length; i++){
-			fields[i].addEventListener("keyup",fruitfulFunk.speaking);
-			buttons[i].addEventListener("click", fruitfulFunk.listening);	
-		}
-			
-			
-		fruitfulFunk.collectSteps();
-		window.location.href="#kadesh-page"
-	// Add event listener to kadesh's modal
-	document.getElementById('kadesh-modal-input').addEventListener('keydown', fruitfulFunk.searchBeliefs)
-
-	// event listener to add modals
-	/*var steps = document.getElementsByClassName('step');
+    // event listener to add modals
+    /*var steps = document.getElementsByClassName('step');
 	for (var i = 0; i < steps.length; i++ ) {
 		steps[i].addEventListener('click', fruitfulFunk.displayModal)
 	};*/
-				
-	},
-	collectSteps: function(){
-		allSteps=localStorage.getItem("allSteps");
-		allSteps=JSON.parse(allSteps);
-		if(allSteps==null){
-			allSteps=[];
-		}
-		
-		return allSteps
-		
-	},
+  },
+  collectSteps: function () {
+    allSteps = localStorage.getItem("allSteps");
+    allSteps = JSON.parse(allSteps);
+    if (allSteps == null) {
+      allSteps = [];
+    }
 
-	speaking: function () {
-		var step=this.id;
-		steps[step]=this.value ;
-		return steps;
-	},
-	/* 
+    return allSteps;
+  },
+
+  speaking: function () {
+    var step = this.id;
+    steps[step] = this.value;
+    return steps;
+  },
+  /* 
 I am not sure of the best way to structure this, I think I should check if I can break down the complexity of this, I could have a function which checks if all other fields are empty, and I can use this for the steps here, and also to check in the step I wish to update. I want to be saying if all fields here are blank, then I want to call the function which is going to load the steps. I am not sure how it fits into comparison with this one  but I think it does matter a little bit. It would kind of be easier if I were using react, but nevertheless. 
 */
-	listening: function(){
-		var inside="not sure";
+  listening: function () {
+    var inside = "not sure";
 
-		if(steps.kadesh.length<5){
-			return false
-		}
-		for(var i=0; i<allSteps.length;i++){
-			if(steps.kadesh==allSteps[i].kadesh){
-					if(fruitfulFunk.checkIsEmpty(steps)){
-						fruitfulFunk.fruitfullness(allSteps[i])
-						return false
-					}else{
-						allSteps[i]=steps
-						inside="yes"
-						break
-					}
-			}
-		}
-		if(inside=="not sure"){
-			inside="no"
-			allSteps.push(steps)
-		}
-		
-		var allStepsPackage=JSON.stringify(allSteps)
-		localStorage.setItem("allSteps",allStepsPackage)
-		return allSteps
-	},
-	fruitfullness: function(setOfSteps){
-		var fields=document.getElementsByClassName("participatory-fields");
+    if (steps.kadesh.length < 5) { // Not best technique here for validation. 
+      return false;
+    }
+    for (var i = 0; i < allSteps.length; i++) {
+      if (steps.kadesh == allSteps[i].kadesh) {
+        if (fruitfulFunk.checkIsEmpty(steps)) {
+          fruitfulFunk.fruitfullness(allSteps[i]);
+          return false;
+        } else {
+          allSteps[i] = steps;
+          inside = "yes";
+          break;
+        }
+      }
+    }
+    if (inside == "not sure") {
+      inside = "no";
+      allSteps.push(steps);
+    }
 
-		
-		
-		for(var i=0; i<fields.length;i++){
+    var allStepsPackage = JSON.stringify(allSteps);
+    localStorage.setItem("allSteps", allStepsPackage);
+    return allSteps;
+  },
+  fruitfullness: function (setOfSteps) {
+    var fields = document.getElementsByClassName("participatory-fields");
 
-			fields[i].value=setOfSteps[fields[i].id];
-		}
-		return steps;
-	},
-	checkIsEmpty: function(setOfSteps){
-	// function to check if the contents of the steps are empty or not if they are all empty then I think I want it to add to the existing set of steps. Do I want  it to override what already exists? I don't think I want to 
-		var isAllBlank="not sure"
+    for (var i = 0; i < fields.length; i++) {
+      fields[i].value = setOfSteps[fields[i].id];
+    }
+    return steps;
+  },
+  checkIsEmpty: function (setOfSteps) {
+    // function to check if the contents of the steps are empty or not if they are all empty then I think I want it to add to the existing set of steps. Do I want  it to override what already exists? I don't think I want to
+    var isAllBlank = "not sure";
 
-		for(step in setOfSteps){
-			if(setOfSteps[step]!="" && step!="kadesh"){
+    for (step in setOfSteps) {
+      if (setOfSteps[step] != "" && step != "kadesh") {
+        isAllBlank = "no";
+      }
+    }
 
-				isAllBlank="no";
-			}
-		}
-
-		if(isAllBlank=="no"){
-			return false
-		}else{
-			return true
-		}
-	}
-
-	
-}
-
-fruitfulFunk.searchBeliefs = function(event) {
-	var value = event.target.value;
-	
-	var beliefs = [];
-	for (var i = 0; i<allSteps.length; i++) {
-		var belief = allSteps[i].kadesh
-		if (belief.includes(value)) {
-			beliefs.push(belief)		
-		}
-	}
-	fruitfulFunk.renderSearchDropDown(beliefs)
+    if (isAllBlank == "no") {
+      return false;
+    } else {
+      return true;
+    }
+  },
 };
 
-fruitfulFunk.renderSearchDropDown = function(linkedBeliefs) {
-	var searchContainer = document.getElementsByClassName('search-container')[0];
-	/*while(searchContainer.firstElementChild){
+fruitfulFunk.searchBeliefs = function (event) {
+  var value = event.target.value.toLowerCase();
+
+  var beliefs = [];
+  for (var i = 0; i < allSteps.length; i++) {
+    var belief = allSteps[i].kadesh;
+    if (belief.toLowerCase().includes(value)) {
+      beliefs.push(belief);
+    }
+  }
+  fruitfulFunk.renderSearchDropDown(beliefs);
+};
+
+fruitfulFunk.renderSearchDropDown = function (linkedBeliefs) {
+  var searchContainer = document.getElementsByClassName("search-container")[0];
+  /*while(searchContainer.firstElementChild){
 		searchContainer.removeChild(searchContainer.firstChildElement);
 	};*/
-	searchContainer.innerHTML = '';
-	for(var i = 0; i<linkedBeliefs.length; i++) {
-		var beliefContainer = document.createElement('div');
-		beliefContainer.classList.add('search-child');
-		var beliefSubstring = linkedBeliefs[i].substring(0,21);
-		beliefContainer.innerText = beliefSubstring;
-		searchContainer.appendChild(beliefContainer)
-		beliefContainer.addEventListener('click', fruitfulFunk.loadBelief);
-	};
+  searchContainer.innerHTML = "";
+  for (let i = 0; i < linkedBeliefs.length; i++) {
+    var beliefContainer = document.createElement("div");
+    beliefContainer.classList.add("search-child");
+    beliefContainer.innerText = linkedBeliefs[i]; //beliefSubstring;
+    searchContainer.appendChild(beliefContainer);
+    beliefContainer.addEventListener("click", () =>
+      fruitfulFunk.loadBelief(linkedBeliefs[i])
+    );
+  }
 };
 
-fruitfulFunk.loadBelief = function(event) {
-	console.log('load values for belief here. There is already a function for this in here somewhere -- So I am not sure of the best way to be linking this in all honesty. ')
-	
-}
+fruitfulFunk.loadBelief = function (beliefText) {
+  console.log(beliefText);
+  document.getElementById("kadesh").value = beliefText;
+  steps.kadesh = beliefText;
+  fruitfulFunk.listening();
+  console.log(
+    "load values for belief here. There is already a function for this in here somewhere -- So I am not sure of the best way to be linking this in all honesty. "
+  );
+};
 
-fruitfulFunk.displayModal = function() {
-	var modals = document.getElementsByTagName('modal');
-	var modalKey = this.classList[0];
-	var modalKey = modalKey + '-modal';
-	document.getElementById(modalKey).style.display= 'flex';
+// fruitfulFunk.displayModal = function() {
+// 	var modals = document.getElementsByTagName('modal');
+// 	var modalKey = this.classList[0];
+// 	var modalKey = modalKey + '-modal';
+// 	document.getElementById(modalKey).style.display= 'flex';
 
-}
+// }
 
 fruitfulFunk.initialising();
 /*I am trying to send the information to the local storage, but I think I want to store it in an object which has the same value as the Kadesh stage, because this is what we enter service through (swear in His name, cleave to Him, have a reminder between your eyes.)
@@ -209,4 +206,3 @@ Admittedly I am kind of not being as strict with this as I am with the dev of th
 
 I have not added a means to close the modal yet, this is still something which I have left to be doing.
 */
-
