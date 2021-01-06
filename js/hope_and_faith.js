@@ -4,7 +4,7 @@ var steps = {
   kadesh: "",
   urchatz: "",
   karpas: "",
-  yachatz: "",
+  yachatz: [],
   maggid: "",
   rachtzah: "",
   motzi: "",
@@ -38,7 +38,12 @@ var fruitfulFunk = {
     /*var steps = document.getElementsByClassName('step');
 	for (var i = 0; i < steps.length; i++ ) {
 		steps[i].addEventListener('click', fruitfulFunk.displayModal)
-	};*/
+  };*/
+
+    const yachatzButton = document.getElementById("yachatz-button");
+    yachatzButton.addEventListener("click", () =>
+      fruitfulFunk.handleMultiAdd("yachatz")
+    );
   },
   collectSteps: function () {
     allSteps = localStorage.getItem("allSteps");
@@ -52,8 +57,10 @@ var fruitfulFunk = {
 
   speaking: function () {
     var step = this.id;
-    steps[step] = this.value;
-    return steps;
+    if (typeof steps[step] === "string") {
+      steps[step] = this.value;
+      return steps;
+    }
   },
   /* 
 I am not sure of the best way to structure this, I think I should check if I can break down the complexity of this, I could have a function which checks if all other fields are empty, and I can use this for the steps here, and also to check in the step I wish to update. I want to be saying if all fields here are blank, then I want to call the function which is going to load the steps. I am not sure how it fits into comparison with this one  but I think it does matter a little bit. It would kind of be easier if I were using react, but nevertheless. 
@@ -61,7 +68,8 @@ I am not sure of the best way to structure this, I think I should check if I can
   listening: function () {
     var inside = "not sure";
 
-    if (steps.kadesh.length < 5) { // Not best technique here for validation. 
+    if (steps.kadesh.length < 5) {
+      // Not best technique here for validation.
       return false;
     }
     for (var i = 0; i < allSteps.length; i++) {
@@ -89,6 +97,8 @@ I am not sure of the best way to structure this, I think I should check if I can
     var fields = document.getElementsByClassName("participatory-fields");
 
     for (var i = 0; i < fields.length; i++) {
+      steps = setOfSteps;
+
       fields[i].value = setOfSteps[fields[i].id];
     }
     return steps;
@@ -149,6 +159,29 @@ fruitfulFunk.loadBelief = function (beliefText) {
   console.log(
     "load values for belief here. There is already a function for this in here somewhere -- So I am not sure of the best way to be linking this in all honesty. "
   );
+};
+
+fruitfulFunk.handleMultiAdd = (step) => {
+  const input = document.getElementById("yachatz")
+  const value = input.value;
+  const container = document.getElementById("yachatz-inputs-container");
+
+  console.log(value);
+  console.log(steps);
+
+  steps.yachatz.push(value);
+  
+  const span = document.createElement("span");
+  
+  span.innerHTML = value;
+  
+  container.appendChild(span);
+  
+  input.value = "";
+
+  // steps.yachatz.map((val) => {
+ 
+  // });
 };
 
 // fruitfulFunk.displayModal = function() {

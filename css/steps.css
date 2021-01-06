@@ -75,7 +75,7 @@ div{
 .stagename{
 	margin-bottom: 0px;
 }
-
+/* 
 modal {
 	height: 72vh;
 	width: 72vw;
@@ -89,8 +89,10 @@ modal {
 	align-items: center;
 	justify-content: center;
 	display: none;
+} */
+
+textarea:focus {
+	min-height: 36vh;
 }
-
-
 
 	
