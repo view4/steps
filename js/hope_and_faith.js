@@ -3,18 +3,18 @@ var allSteps = [];
 var steps = {
   kadesh: "",
   urchatz: "",
-  karpas: "",
+  karpas: [],
   yachatz: [],
   maggid: "",
   rachtzah: "",
   motzi: "",
   matzah: "",
-  maror: "",
-  korech: "",
-  shulchan_orech: "",
-  tzafun: "",
+  maror: [],
+  korech: [],
+  shulchan_orech: [],
+  tzafun: [],
   barech: "",
-  hallel: "",
+  hallel: [],
   nirtzah: "",
 };
 
@@ -40,10 +40,14 @@ var fruitfulFunk = {
 		steps[i].addEventListener('click', fruitfulFunk.displayModal)
   };*/
 
-    const yachatzButton = document.getElementById("yachatz-button");
-    yachatzButton.addEventListener("click", () =>
-      fruitfulFunk.handleMultiAdd("yachatz")
-    );
+    const multiButtons = document.getElementsByClassName("multi-button");
+    for (let i = 0; i < multiButtons.length; i++) {
+      const input = multiButtons[i].previousElementSibling;
+      const container = multiButtons[i].nextElementSibling;
+      multiButtons[i].addEventListener("click", () =>
+        fruitfulFunk.handleMultiAdd(input, container)
+      );
+    }
   },
   collectSteps: function () {
     allSteps = localStorage.getItem("allSteps");
@@ -161,27 +165,15 @@ fruitfulFunk.loadBelief = function (beliefText) {
   );
 };
 
-fruitfulFunk.handleMultiAdd = (step) => {
-  const input = document.getElementById("yachatz")
+fruitfulFunk.handleMultiAdd = (input, container) => {
   const value = input.value;
-  const container = document.getElementById("yachatz-inputs-container");
-
-  console.log(value);
-  console.log(steps);
-
-  steps.yachatz.push(value);
-  
+  const step = input.id;
   const span = document.createElement("span");
-  
-  span.innerHTML = value;
-  
-  container.appendChild(span);
-  
-  input.value = "";
 
-  // steps.yachatz.map((val) => {
- 
-  // });
+  steps[step].push(value);
+  span.innerHTML = value;
+  container.appendChild(span);
+  input.value = "";
 };
 
 // fruitfulFunk.displayModal = function() {
