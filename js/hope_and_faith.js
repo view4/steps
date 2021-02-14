@@ -33,7 +33,9 @@ var fruitfulFunk = {
     document
       .getElementById("kadesh")
       .addEventListener("keydown", fruitfulFunk.searchBeliefs);
-
+    document
+      .getElementById("kadesh")
+      .addEventListener("focus", fruitfulFunk.searchBeliefs);
     // event listener to add modals
     /*var steps = document.getElementsByClassName('step');
 	for (var i = 0; i < steps.length; i++ ) {
@@ -102,8 +104,16 @@ I am not sure of the best way to structure this, I think I should check if I can
 
     for (var i = 0; i < fields.length; i++) {
       steps = setOfSteps;
-
-      fields[i].value = setOfSteps[fields[i].id];
+      const value = setOfSteps[fields[i].id];
+      if (typeof value === "string") {
+        fields[i].value = value;
+      } else {
+        value.map((val) => {
+          fields[i].value = val;
+          const container = fields[i].nextElementSibling.nextElementSibling;
+          fruitfulFunk.handleMultiAdd(fields[i], container);
+        });
+      }
     }
     return steps;
   },
@@ -127,11 +137,11 @@ I am not sure of the best way to structure this, I think I should check if I can
 
 fruitfulFunk.searchBeliefs = function (event) {
   var value = event.target.value.toLowerCase();
-
   var beliefs = [];
+
   for (var i = 0; i < allSteps.length; i++) {
     var belief = allSteps[i].kadesh;
-    if (belief.toLowerCase().includes(value)) {
+    if (belief.toLowerCase().includes(value) || value === "") {
       beliefs.push(belief);
     }
   }
@@ -147,22 +157,25 @@ fruitfulFunk.renderSearchDropDown = function (linkedBeliefs) {
   for (let i = 0; i < linkedBeliefs.length; i++) {
     var beliefContainer = document.createElement("div");
     beliefContainer.classList.add("search-child");
-    beliefContainer.innerText = linkedBeliefs[i]; //beliefSubstring;
+    beliefContainer.innerText = linkedBeliefs[i];
     searchContainer.appendChild(beliefContainer);
-    beliefContainer.addEventListener("click", () =>
-      fruitfulFunk.loadBelief(linkedBeliefs[i])
-    );
+    beliefContainer.addEventListener("click", () => {
+      fruitfulFunk.loadBelief(linkedBeliefs[i]);
+      fruitfulFunk.clearBeliefSearch();
+    });
   }
 };
 
+fruitfulFunk.clearBeliefSearch = (e) => {
+  var searchContainer = document.getElementsByClassName("search-container")[0];
+  searchContainer.innerHTML = "";
+};
+
 fruitfulFunk.loadBelief = function (beliefText) {
-  console.log(beliefText);
   document.getElementById("kadesh").value = beliefText;
   steps.kadesh = beliefText;
   fruitfulFunk.listening();
-  console.log(
-    "load values for belief here. There is already a function for this in here somewhere -- So I am not sure of the best way to be linking this in all honesty. "
-  );
+
 };
 
 fruitfulFunk.handleMultiAdd = (input, container) => {
