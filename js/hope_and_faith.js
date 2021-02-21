@@ -1,4 +1,4 @@
-var allSteps = [];
+// var allSteps = [];
 var beliefs = [];
 var steps = {
   kadesh: "",
@@ -28,39 +28,33 @@ var fruitfulFunk = {
       buttons[i].addEventListener("click", fruitfulFunk.listening);
     }
 
-    fruitfulFunk.collectSteps();
+    // fruitfulFunk.collectSteps();
     window.location.href = "#kadesh-page";
-    // Add event listener to kadesh's modal
     document
       .getElementById("kadesh")
       .addEventListener("keydown", fruitfulFunk.searchBeliefs);
     document
       .getElementById("kadesh")
       .addEventListener("focus", fruitfulFunk.searchBeliefs);
-    // event listener to add modals
-    /*var steps = document.getElementsByClassName('step');
-	for (var i = 0; i < steps.length; i++ ) {
-		steps[i].addEventListener('click', fruitfulFunk.displayModal)
-  };*/
 
     const multiButtons = document.getElementsByClassName("multi-button");
     for (let i = 0; i < multiButtons.length; i++) {
       const input = multiButtons[i].previousElementSibling;
       const container = multiButtons[i].nextElementSibling;
       multiButtons[i].addEventListener("click", () =>
-        fruitfulFunk.handleMultiAdd(input, container)
+        fruitfulFunk.handleMultiAdd(input, container, true)
       );
     }
   },
-  collectSteps: function () {
-    allSteps = localStorage.getItem("allSteps");
-    allSteps = JSON.parse(allSteps);
-    if (allSteps == null) {
-      allSteps = [];
-    }
+  // collectSteps: function () {
+  //   allSteps = localStorage.getItem("allSteps");
+  //   allSteps = JSON.parse(allSteps);
+  //   if (allSteps == null) {
+  //     allSteps = [];
+  //   }
 
-    return allSteps;
-  },
+  //   return allSteps;
+  // },
 
   speaking: function () {
     var step = this.id;
@@ -73,67 +67,66 @@ var fruitfulFunk = {
 I am not sure of the best way to structure this, I think I should check if I can break down the complexity of this, I could have a function which checks if all other fields are empty, and I can use this for the steps here, and also to check in the step I wish to update. I want to be saying if all fields here are blank, then I want to call the function which is going to load the steps. I am not sure how it fits into comparison with this one  but I think it does matter a little bit. It would kind of be easier if I were using react, but nevertheless. 
 */
   listening: function () {
-    var inside = "not sure";
+    // var inside = "not sure";
 
-    if (steps.kadesh.length < 5) {
-      // Not best technique here for validation.
-      return false;
-    }
-    for (var i = 0; i < allSteps.length; i++) {
-      if (steps.kadesh == allSteps[i].kadesh) {
-        if (fruitfulFunk.checkIsEmpty(steps)) {
-          fruitfulFunk.fruitfullness(allSteps[i]);
-          return false;
-        } else {
-          allSteps[i] = steps;
-          inside = "yes";
-          break;
-        }
-      }
-    }
-    if (inside == "not sure") {
-      inside = "no";
-      allSteps.push(steps);
-    }
+    if (steps.kadesh.length < 5) return false;
+    // Not best technique here for validation.
+    // for (var i = 0; i < allSteps.length; i++) {
+    //   if (steps.kadesh == allSteps[i].kadesh) {
+    //     if (fruitfulFunk.checkIsEmpty(steps)) {
+    //       fruitfulFunk.fruitfullness(allSteps[i]);
+    //       return false;
+    //     } else {
+    //       allSteps[i] = steps;
+    //       inside = "yes";
+    //       break;
+    //     }
+    //   }
+    // }
+    // if (inside == "not sure") {
+    //   inside = "no";
+    //   allSteps.push(steps);
+    // }
 
-    var allStepsPackage = JSON.stringify(allSteps);
-    localStorage.setItem("allSteps", allStepsPackage);
-    return allSteps;
+    fruitfulFunk.saveSteps(steps);
+    // var allStepsPackage = JSON.stringify(allSteps);
+    // localStorage.setItem("allSteps", allStepsPackage);
+    // return allSteps;
   },
   fruitfullness: function (setOfSteps) {
     var fields = document.getElementsByClassName("participatory-fields");
 
     for (var i = 0; i < fields.length; i++) {
-      steps = setOfSteps;
+      steps = { ...steps, ...setOfSteps };
       const value = setOfSteps[fields[i].id];
       if (typeof value === "string") {
         fields[i].value = value;
-      } else {
+      } else if (value && typeof value !== "string") {
         value.map((val) => {
           fields[i].value = val;
           const container = fields[i].nextElementSibling.nextElementSibling;
-          fruitfulFunk.handleMultiAdd(fields[i], container);
+          fruitfulFunk.handleMultiAdd(fields[i], container, false);
         });
       }
     }
     return steps;
   },
-  checkIsEmpty: function (setOfSteps) {
-    // function to check if the contents of the steps are empty or not if they are all empty then I think I want it to add to the existing set of steps. Do I want  it to override what already exists? I don't think I want to
-    var isAllBlank = "not sure";
+  // checkIsEmpty: function (setOfSteps) {
+  //   // function to check if the contents of the steps are empty or not if they are all empty then I think I want it to add to the existing set of steps. Do I want  it to override what already exists? I don't think I want to
+  //   var isAllBlank = "not sure";
 
-    for (step in setOfSteps) {
-      if (setOfSteps[step] != "" && step != "kadesh") {
-        isAllBlank = "no";
-      }
-    }
+  //   for (step in setOfSteps) {
+  //     if (setOfSteps[step] != "" && step != "kadesh") {
+  //       isAllBlank = "no";
+  //     }
+  //   }
 
-    if (isAllBlank == "no") {
-      return false;
-    } else {
-      return true;
-    }
-  },
+  //   if (isAllBlank == "no") {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // },
 };
 
 fruitfulFunk.searchBeliefs = function (event) {
@@ -141,7 +134,7 @@ fruitfulFunk.searchBeliefs = function (event) {
   var matchingBeliefs = [];
 
   for (var i = 0; i < beliefs.length; i++) {
-    var belief = beliefs[i]//allSteps[i].kadesh;
+    var belief = beliefs[i];
     if (belief.toLowerCase().includes(value) || value === "") {
       matchingBeliefs.push(belief);
     }
@@ -151,9 +144,7 @@ fruitfulFunk.searchBeliefs = function (event) {
 
 fruitfulFunk.renderSearchDropDown = function (linkedBeliefs) {
   var searchContainer = document.getElementsByClassName("search-container")[0];
-  /*while(searchContainer.firstElementChild){
-		searchContainer.removeChild(searchContainer.firstChildElement);
-	};*/
+
   searchContainer.innerHTML = "";
   for (let i = 0; i < linkedBeliefs.length; i++) {
     var beliefContainer = document.createElement("div");
@@ -172,19 +163,25 @@ fruitfulFunk.clearBeliefSearch = (e) => {
   searchContainer.innerHTML = "";
 };
 
-fruitfulFunk.loadBelief = function (beliefText) {
+fruitfulFunk.loadBelief = async (beliefText) => {
   document.getElementById("kadesh").value = beliefText;
-  steps.kadesh = beliefText;
-  fruitfulFunk.listening();
-
+  const res = await fetch(`http://localhost:7000/steps/${beliefText}`);
+  const steps = await res.json();
+  fruitfulFunk.fruitfullness(steps);
 };
 
-fruitfulFunk.handleMultiAdd = (input, container) => {
+fruitfulFunk.handleMultiAdd = (
+  input,
+  container,
+  shouldAddValueToSteps = true
+) => {
   const value = input.value;
   const step = input.id;
   const span = document.createElement("span");
 
-  steps[step].push(value);
+  if (shouldAddValueToSteps) {
+    steps[step].push(value);
+  }
   span.innerHTML = value;
   container.appendChild(span);
   input.value = "";
@@ -193,16 +190,22 @@ fruitfulFunk.handleMultiAdd = (input, container) => {
 fruitfulFunk.fetchBeliefs = async () => {
   const response = await fetch("http://localhost:7000/kadesh");
   beliefs = await response.json();
-  console.log(beliefs)
-}
+};
 
-// fruitfulFunk.displayModal = function() {
-// 	var modals = document.getElementsByTagName('modal');
-// 	var modalKey = this.classList[0];
-// 	var modalKey = modalKey + '-modal';
-// 	document.getElementById(modalKey).style.display= 'flex';
+fruitfulFunk.saveSteps = async (steps) => {
+  const stepsString = JSON.stringify({ steps });
 
-// }
+  let res = await fetch(`http://localhost:7000/steps/`, {
+    ...postOptions,
+    body: stepsString,
+  });
+};
+const postOptions = {
+  method: "POST",
+  mode: "no-cors",
+  cache: "no-cache",
+  headers: { "Content-Type": "application/json" },
+};
 
 fruitfulFunk.initialising();
 /*I am trying to send the information to the local storage, but I think I want to store it in an object which has the same value as the Kadesh stage, because this is what we enter service through (swear in His name, cleave to Him, have a reminder between your eyes.)
