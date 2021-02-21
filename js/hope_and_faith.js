@@ -1,5 +1,5 @@
 var allSteps = [];
-
+var beliefs = [];
 var steps = {
   kadesh: "",
   urchatz: "",
@@ -20,6 +20,7 @@ var steps = {
 
 var fruitfulFunk = {
   initialising: function () {
+    fruitfulFunk.fetchBeliefs();
     var fields = document.getElementsByClassName("participatory-fields");
     var buttons = document.getElementsByClassName("input-buttons");
     for (var i = 0; i < fields.length; i++) {
@@ -137,15 +138,15 @@ I am not sure of the best way to structure this, I think I should check if I can
 
 fruitfulFunk.searchBeliefs = function (event) {
   var value = event.target.value.toLowerCase();
-  var beliefs = [];
+  var matchingBeliefs = [];
 
-  for (var i = 0; i < allSteps.length; i++) {
-    var belief = allSteps[i].kadesh;
+  for (var i = 0; i < beliefs.length; i++) {
+    var belief = beliefs[i]//allSteps[i].kadesh;
     if (belief.toLowerCase().includes(value) || value === "") {
-      beliefs.push(belief);
+      matchingBeliefs.push(belief);
     }
   }
-  fruitfulFunk.renderSearchDropDown(beliefs);
+  fruitfulFunk.renderSearchDropDown(matchingBeliefs);
 };
 
 fruitfulFunk.renderSearchDropDown = function (linkedBeliefs) {
@@ -188,6 +189,12 @@ fruitfulFunk.handleMultiAdd = (input, container) => {
   container.appendChild(span);
   input.value = "";
 };
+
+fruitfulFunk.fetchBeliefs = async () => {
+  const response = await fetch("http://localhost:7000/kadesh");
+  beliefs = await response.json();
+  console.log(beliefs)
+}
 
 // fruitfulFunk.displayModal = function() {
 // 	var modals = document.getElementsByTagName('modal');
