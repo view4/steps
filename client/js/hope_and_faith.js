@@ -165,7 +165,9 @@ fruitfulFunk.clearBeliefSearch = (e) => {
 
 fruitfulFunk.loadBelief = async (beliefText) => {
   document.getElementById("kadesh").value = beliefText;
-  const res = await fetch(`http://localhost:7000/steps/${beliefText}`);
+  // const res = await fetch(`http://localhost:7000/steps/${beliefText}`);
+  const res = await fetch(`http://167.99.85.228:7000/steps/${beliefText}`);
+
   const steps = await res.json();
   fruitfulFunk.fruitfullness(steps);
 };
@@ -188,14 +190,18 @@ fruitfulFunk.handleMultiAdd = (
 };
 
 fruitfulFunk.fetchBeliefs = async () => {
-  const response = await fetch("http://localhost:7000/kadesh");
+  const response = await fetch("http://167.99.85.228:7000/kadesh");
+  // const response = await fetch("http://localhost:7000/kadesh");
+
   beliefs = await response.json();
 };
 
 fruitfulFunk.saveSteps = async (steps) => {
   const stepsString = JSON.stringify({ steps });
 
-  let res = await fetch(`http://localhost:7000/steps/`, {
+  let res = await fetch(`http://167.99.85.228:7000/steps/`, {
+    // let res = await fetch(`http://localhost:7000/steps/`, {
+
     ...postOptions,
     body: stepsString,
   });
