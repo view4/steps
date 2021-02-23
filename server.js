@@ -1,8 +1,8 @@
 const http = require("http");
 const { StringDecoder } = require("string_decoder");
+const router = require("./router");
 const url = require("url");
 
-const router = require("./router");
 const helpers = require("./helpers");
 
 const headers ={
@@ -17,7 +17,11 @@ server.httpServer = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const pathname = parsedUrl.pathname;
     const method = req.method.toLowerCase();
-    const {route, belief} = helpers.getRoute(pathname, method);
+    
+    let paths = pathname.split("/");
+    if((!router[paths[1]] || !router[paths[1]][method]) && !!!paths[1]) return;
+    const route = router[paths[1] || "client"][method]
+    
     if(!route) return;
     res.writeHead(200, headers)
 
@@ -30,7 +34,7 @@ server.httpServer = http.createServer((req, res) => {
 
     req.on("end", () => {
         buffer += decoder.end();
-        route({belief, req, body:buffer}, res)
+        route({paths, req, body:buffer}, res)
     });
 })
 
