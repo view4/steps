@@ -34,7 +34,7 @@ server.httpServer = http.createServer((req, res) => {
 
     req.on("end", () => {
         buffer += decoder.end();
-        route({paths, req, body:buffer}, res)
+        route({paths, ...req, body:buffer}, res)
     });
 })
 
