@@ -21,7 +21,6 @@ server.httpServer = http.createServer((req, res) => {
     let paths = pathname.split("/");
     if((!router[paths[1]] || !router[paths[1]][method]) && !!paths[1]) return;
     const route = router[paths[1] || "client"][method]
-    console.log(route)
     
     if(!route) return;
     res.writeHead(200, headers)
