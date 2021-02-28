@@ -169,11 +169,10 @@ fruitfulFunk.clearBeliefSearch = (e) => {
 };
 
 fruitfulFunk.loadBelief = async (beliefText) => {
-  console.log("isLocal", isLocal)
-  document.getElementById("kadesh").value = beliefText;
-  // const res = await fetch(`http://localhost:7000/steps/${beliefText}`);
-  const res = await fetch(`${isLocal ? localUrl : remoteUrl}steps/${beliefText}`);
+  fruitfulFunk.resetSteps();
 
+  document.getElementById("kadesh").value = beliefText;
+  const res = await fetch(`${isLocal ? localUrl : remoteUrl}steps/${beliefText}`);
   const steps = await res.json();
   fruitfulFunk.fruitfullness(steps);
 };
@@ -212,6 +211,22 @@ fruitfulFunk.saveSteps = async (steps) => {
     body: stepsString,
   });
 };
+
+fruitfulFunk.resetSteps = () => {
+  const stepNames = Object.keys(steps);
+  stepNames.map(name => steps[name] = typeof steps[name] === "string" ? "": []);
+
+  const multiContainers = document.getElementsByClassName("multi-inputs-container");
+  for(let i = 0; i< multiContainers.length; i++){
+    const container = multiContainers[i];
+    while(container.lastElementChild){
+      container.removeChild(container.lastElementChild)
+    }
+  }
+
+}
+
+
 const postOptions = {
   method: "POST",
   mode: "no-cors",
