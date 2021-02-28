@@ -18,6 +18,11 @@ var steps = {
   nirtzah: "",
 };
 
+const isLocal = window.location.host.includes("localhost");
+const localUrl = "http://localhost:7000/";
+const remoteUrl = "http://167.99.85.228:7000/";
+
+
 var fruitfulFunk = {
   initialising: function () {
     fruitfulFunk.fetchBeliefs();
@@ -164,9 +169,10 @@ fruitfulFunk.clearBeliefSearch = (e) => {
 };
 
 fruitfulFunk.loadBelief = async (beliefText) => {
+  console.log("isLocal", isLocal)
   document.getElementById("kadesh").value = beliefText;
   // const res = await fetch(`http://localhost:7000/steps/${beliefText}`);
-  const res = await fetch(`http://167.99.85.228:7000/steps/${beliefText}`);
+  const res = await fetch(`${isLocal ? localUrl : remoteUrl}steps/${beliefText}`);
 
   const steps = await res.json();
   fruitfulFunk.fruitfullness(steps);
@@ -190,7 +196,7 @@ fruitfulFunk.handleMultiAdd = (
 };
 
 fruitfulFunk.fetchBeliefs = async () => {
-  const response = await fetch("http://167.99.85.228:7000/kadesh");
+  const response = await fetch(`${isLocal ? localUrl : remoteUrl}kadesh`);
   // const response = await fetch("http://localhost:7000/kadesh");
 
   beliefs = await response.json();
@@ -199,7 +205,7 @@ fruitfulFunk.fetchBeliefs = async () => {
 fruitfulFunk.saveSteps = async (steps) => {
   const stepsString = JSON.stringify({ steps });
 
-  let res = await fetch(`http://167.99.85.228:7000/steps/`, {
+  let res = await fetch(`${isLocal ? localUrl : remoteUrl}steps/`, {
     // let res = await fetch(`http://localhost:7000/steps/`, {
 
     ...postOptions,
