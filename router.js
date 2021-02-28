@@ -45,13 +45,10 @@ router.client.html = (req, res) => {
 };
 
 router.client.get = (req, res) => {
-    // try{
-        const { paths } = req;
-        const type = paths[paths.length - 1] || "html";
-        
-        router.client[type] && router.client[type](req, res);
-    // } catch{}
-
+    const { paths } = req;
+    const type = paths[paths.length - 1] || "html";
+    
+    router.client[type] && router.client[type](req, res);
 };
 
 router.client.css = (req, res) => {

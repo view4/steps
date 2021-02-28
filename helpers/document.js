@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-
 const document = {};
 
 document.baseDir = path.join(__dirname, "/../data/");
@@ -77,11 +76,6 @@ document.write = (dir, file, data) => {
       document.create(dir, file, data);
     }
   } catch {}
-};
-
-const data = {
-  cling: "cling cling cling",
-  elephant: false,
 };
 
 module.exports = document;

@@ -196,7 +196,6 @@ fruitfulFunk.handleMultiAdd = (
 
 fruitfulFunk.fetchBeliefs = async () => {
   const response = await fetch(`${isLocal ? localUrl : remoteUrl}kadesh`);
-  // const response = await fetch("http://localhost:7000/kadesh");
 
   beliefs = await response.json();
 };
@@ -205,8 +204,6 @@ fruitfulFunk.saveSteps = async (steps) => {
   const stepsString = JSON.stringify({ steps });
 
   let res = await fetch(`${isLocal ? localUrl : remoteUrl}steps/`, {
-    // let res = await fetch(`http://localhost:7000/steps/`, {
-
     ...postOptions,
     body: stepsString,
   });
