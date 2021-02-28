@@ -14,6 +14,15 @@ writer.read = (kadesh) => {
     const res = document.read("north", kadesh, callback);
 }
 
+writer.alterBeliefText = (originalText, correctedText) => {
+    document.ammend("kadesh", "index", {[correctedText]: {}}, originalText);
+    document.rename(`north/${originalText}.json`,`north/${correctedText}.json` )
+    document.ammend("north", correctedText, {kadesh: correctedText})
+
+}
+
+writer.alterBeliefText("Do not murde", "Do not murder")
+
 const steps = {
     kadesh:  "Love the Lord, your God, with all your heart and with all your soul, and with all your might",//"hear O'Israel; the Lord is your God, the Lord is One",
     urchatz: "There is an importance of cleansing and remaining cleansed with some meaning in being.",

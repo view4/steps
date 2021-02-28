@@ -47,14 +47,18 @@ document.create = (dir, file, data) => {
   } catch {}
 };
 
-document.ammend = async (dir, file, ammendedData) => {
+document.ammend = async (dir, file, ammendedData, deleteField ) => {
   const path = `${document.baseDir + dir}/${file}.json`;
   try {
     document.read(dir, file, (existingData) => {
+      if (deleteField){
+        delete existingData[deleteField];
+      }
       const data = {
         ...existingData,
         ...ammendedData,
       };
+
       return fs.open(path, "r+", (err, fd) => truncate(err, fd, data));
     });
   } catch {}
@@ -77,5 +81,17 @@ document.write = (dir, file, data) => {
     }
   } catch {}
 };
+
+
+document.rename = ( oldPath, newPath) => {
+  try {
+    return fs.rename(document.baseDir + oldPath, document.baseDir + newPath, (err) => {
+      try {
+
+      }
+      catch{}
+    })
+  }catch {}
+}
 
 module.exports = document;
