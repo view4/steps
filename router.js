@@ -17,15 +17,13 @@ router.kadesh.get = (req, res) => {
 
 router.kadesh.patch = (req, res) => {
   const body = JSON.parse(req.body);
-  console.log("altering belief text")
   const {correctedText, originalText} = body;
   writer.alterBeliefText(originalText, correctedText);
-  res.end("updated belief text")
 }
 
 router.steps.get = (req, res) => {
   const { paths } = req;
-  const belief =paths[paths.length - 1];
+  const belief = paths[paths.length - 1];
   const kadesh = parseBelief(belief);
   document.read("north", kadesh, (data) => {
     let steps = data;
