@@ -47,6 +47,13 @@ document.create = (dir, file, data) => {
   } catch {}
 };
 
+document.createSync = (dir, file, data) => {
+  const path = `${document.baseDir + dir}/${file}.json`;
+  try {
+    fs.openSync(path, "wx", (err, fd) => write(err, fd, data));
+  } catch {}
+}
+
 document.ammend = async (dir, file, ammendedData, deleteField ) => {
   const path = `${document.baseDir + dir}/${file}.json`;
   try {
@@ -70,6 +77,14 @@ document.read = (dir, file, callback) => {
     return fs.readFile(path, "utf-8", (err, data) => read(err, data, callback));
   } catch {}
 };
+
+
+document.readSync = (dir, file) => {
+  const path = `${document.baseDir + dir}/${file}.json`;
+  let data = fs.readFileSync(path, "utf-8");
+  data = JSON.parse(data)
+  return data;
+}
 
 document.write = (dir, file, data) => {
   const path = `${document.baseDir + dir}/${file}.json`;

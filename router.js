@@ -1,4 +1,6 @@
-const { readFile } = require("fs");
+const { readFile, statSync, createReadStream } = require("fs");
+// const { readFileSync } = require("node:fs");
+const path = require('path');
 const { parseBelief } = require("./helpers");
 const document = require("./helpers/document");
 const writer = require("./helpers/writer");
@@ -6,6 +8,7 @@ const router = {};
 router.kadesh = {};
 router.steps = {};
 router.client = {};
+router.backup = {};
 
 router.kadesh.get = (req, res) => {
   document.read("kadesh", "index", (data) => {
@@ -78,5 +81,12 @@ router.client.faith = (req, res) => {
     }
   });
 };
+
+router.backup.get = async (req, res) => {
+  let beliefs = await writer.getBackup();
+  beliefs = JSON.stringify(beliefs)
+  res.end(beliefs)
+}
+
 
 module.exports = router;
