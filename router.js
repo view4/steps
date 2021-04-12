@@ -1,6 +1,4 @@
-const { readFile, statSync, createReadStream } = require("fs");
-// const { readFileSync } = require("node:fs");
-const path = require('path');
+const { readFile } = require("fs");
 const { parseBelief } = require("./helpers");
 const document = require("./helpers/document");
 const writer = require("./helpers/writer");

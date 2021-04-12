@@ -17,10 +17,7 @@ server.httpServer = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const pathname = parsedUrl.pathname;
     const method = req.method.toLowerCase();
-    
-    let paths = pathname.split("/");
-    if((!router[paths[1]] || !router[paths[1]][method]) && !!paths[1]) return;
-    const route = router[paths[1] || "client"][method]
+    const {route, paths} = helpers.getRoute(pathname, method, router);
     
     if(!route) return;
     res.writeHead(200, headers)
