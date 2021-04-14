@@ -80,10 +80,16 @@ document.read = (dir, file, callback) => {
 
 
 document.readSync = (dir, file) => {
-  const path = `${document.baseDir + dir}/${file}.json`;
-  let data = fs.readFileSync(path, "utf-8");
-  data = JSON.parse(data)
-  return data;
+  try {
+    const path = `${document.baseDir + dir}/${file}.json`;
+    let data = fs.readFileSync(path, "utf-8");
+    data = JSON.parse(data)
+    return data;
+  }
+  catch{
+    return {}
+  }
+
 }
 
 document.write = (dir, file, data) => {

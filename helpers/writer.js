@@ -29,5 +29,14 @@ writer.getBackup = async () => {
     return beliefs
 }
 
+writer.upload = async (stepsData) => {
+    const kadeshim = await document.readSync("kadesh", "index");
+    Object.values(stepsData).map(steps => {
+        kadeshim[steps.kadesh] = {};
+        document.write("north",steps.kadesh, steps)
+    })
+    let res = await document.ammend("kadesh", "index", kadeshim);
+}
+
 
 module.exports = writer;

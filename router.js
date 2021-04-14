@@ -7,6 +7,7 @@ router.kadesh = {};
 router.steps = {};
 router.client = {};
 router.backup = {};
+router.upload = {};
 
 router.kadesh.get = (req, res) => {
   document.read("kadesh", "index", (data) => {
@@ -18,9 +19,9 @@ router.kadesh.get = (req, res) => {
 
 router.kadesh.patch = (req, res) => {
   const body = JSON.parse(req.body);
-  const {correctedText, originalText} = body;
+  const { correctedText, originalText } = body;
   writer.alterBeliefText(originalText, correctedText);
-}
+};
 
 router.steps.get = (req, res) => {
   const { paths } = req;
@@ -52,10 +53,10 @@ router.client.html = (req, res) => {
 };
 
 router.client.get = (req, res) => {
-    const { paths } = req;
-    const type = paths[paths.length - 1] || "html";
-    
-    router.client[type] && router.client[type](req, res);
+  const { paths } = req;
+  const type = paths[paths.length - 1] || "html";
+
+  router.client[type] && router.client[type](req, res);
 };
 
 router.client.css = (req, res) => {
@@ -82,9 +83,19 @@ router.client.faith = (req, res) => {
 
 router.backup.get = async (req, res) => {
   let beliefs = await writer.getBackup();
-  beliefs = JSON.stringify(beliefs)
-  res.end(beliefs)
-}
+  beliefs = JSON.stringify(beliefs);
+  res.end(beliefs);
+};
 
+router.upload.post = async (req, res) => {
+  try {
+    let beliefs = JSON.parse(req.body);
+    writer.upload(beliefs)
+    res.end("Uploaded");
+  } catch (e) {
+    console.log(error)
+    res.end("error: ", e);
+  }
+};
 
 module.exports = router;
