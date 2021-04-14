@@ -8,6 +8,7 @@ div {
 
 .whole {
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .links {
@@ -31,7 +32,7 @@ div {
   font-weight: 500;
 }
 .all-steps {
-  width: 80%;
+  width: 81%;
   height: 100vh;
   overflow: auto;
   flex-flow: wrap;
@@ -39,7 +40,7 @@ div {
 .steps {
   height: 100vh;
   width: 100%;
-  border: 1px solid gray;
+  border-top: 1px solid gray;
   align-items: center;
   position: relative;
 }
@@ -93,6 +94,19 @@ textarea:focus {
   font-size: 17px;
 }
 
+
+.multi-inputs-container > span > span {
+  opacity: 0.36;
+  transition:opacity 0.36s;
+  cursor: pointer;
+  margin-left: 18px;
+  color: #777;
+}
+
+.multi-inputs-container > span:hover > span {
+  opacity: 0.9;
+}
+
 .step > div:nth-child(2) {
   flex-direction: row;
   flex-wrap: wrap;
@@ -100,7 +114,6 @@ textarea:focus {
 
 .step > div:nth-child(2) > input {
   min-width: 90%;
-  /* width: 100%; */
 }
 
 .step > div:nth-child(2) > textarea {
@@ -122,4 +135,21 @@ textarea:focus {
 
 .search-child { 
 	border-bottom: 1px solid #cecece;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 81%;
+  display: flex;
+  height: 9vh;
+  border-bottom: 1px solid #777;
+  justify-content: center;
+  background: #fff;
+  align-items: center;
+}
+
+#Kadesh-banner-text {
+  font-size: 18px;
+  font-weight: 700;
 }
