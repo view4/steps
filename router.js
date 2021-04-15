@@ -1,4 +1,4 @@
-const { readFile } = require("fs");
+const { readFile, createWriteStream } = require("fs");
 const { parseBelief } = require("./helpers");
 const document = require("./helpers/document");
 const writer = require("./helpers/writer");
@@ -84,6 +84,17 @@ router.client.faith = (req, res) => {
 router.backup.get = async (req, res) => {
   let beliefs = await writer.getBackup();
   beliefs = JSON.stringify(beliefs);
+  // const date = new Date();
+  // const path = `./data/backups/${date.toDateString()}.json`  
+  // await document.create("backups", date.toDateString(), beliefs, ()=> {
+  //   console.log("calling callback")
+  //   const stream =createWriteStream(path)
+  //   res.pipe(stream)
+  //   res.on("end", () => {
+  //     console.log("download done")
+  //   })
+  // });
+
   res.end(beliefs);
 };
 

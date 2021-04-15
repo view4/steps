@@ -4,10 +4,10 @@ const document = {};
 
 document.baseDir = path.join(__dirname, "/../data/");
 
-const write = (err, fd, data) => {
+const write = (err, fd, data, callback) => {
   try {
     const dataString = JSON.stringify(data);
-    return fs.writeFile(fd, dataString, (err) => close(err, fd));
+    return fs.writeFile(fd, dataString, (err) => close(err, fd, callback));
   } catch {}
 };
 
@@ -17,9 +17,10 @@ const truncate = (err, fd, data) => {
   } catch {}
 };
 
-const close = (err, fd) => {
+const close = (err, fd, callback = () => null) => {
   try {
-    return fs.close(fd, onClose);
+    fs.close(fd, onClose);
+    return callback()
   } catch {}
 };
 const onClose = (err) => {
@@ -40,18 +41,22 @@ const read = (err, data, callback = () => null) => {
   } catch {}
 };
 
-document.create = (dir, file, data) => {
+document.create = (dir, file, data, callback) => {
   const path = `${document.baseDir + dir}/${file}.json`;
   try {
-    fs.open(path, "wx", (err, fd) => write(err, fd, data));
+    fs.open(path, "wx", (err, fd) => write(err, fd, data, callback));
   } catch {}
 };
 
 document.createSync = (dir, file, data) => {
   const path = `${document.baseDir + dir}/${file}.json`;
+  // console.log("data", data)
+  let test = JSON.stringify({"hi": "hey"})
   try {
-    fs.openSync(path, "wx", (err, fd) => write(err, fd, data));
-  } catch {}
+    fs.writeFileSync(path, test);
+  } catch(e) {
+    console.log(e)
+  }
 }
 
 document.ammend = async (dir, file, ammendedData, deleteField ) => {

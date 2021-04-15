@@ -154,3 +154,33 @@ header {
   font-size: 18px;
   font-weight: 700;
 }
+
+.options-button {
+  border-radius: 100%;
+  border: 1px solid #bfbfbf8a;
+  position: absolute;
+  bottom: 7vh;
+  right: 7vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 5px 7px #bfbfbf8a;
+  height: 36px;
+  width: 36px;
+  cursor: pointer;
+}
+
+.options-button > a > span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8em;
+  margin-top: -0.5em;
+  line-height: 0.18em;
+
+}
+.options-button > a {
+  text-decoration: none;
+}
+
