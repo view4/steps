@@ -248,9 +248,10 @@ fruitfulFunk.resetSteps = () => {
 fruitfulFunk.handleBeliefDisplayBanner = (e) => {
   console.log("Being called")
   console.log(e.target.value)
-  let text;
+  let text =document.getElementById("Kadesh-banner-text");
   const stepsContainer = document.getElementsByClassName("all-steps")[0];
-  if( !(!!steps.kadesh)  && e.target.value.length ){
+  console.log(!text)
+  if( !text  && e.target.value.length ){
     console.log("add banner here")
     const header = document.createElement("header")
     const textContainer = document.createElement("div")
@@ -258,10 +259,10 @@ fruitfulFunk.handleBeliefDisplayBanner = (e) => {
     text.id = "Kadesh-banner-text";
     header.append(textContainer)
     textContainer.append(text);
-    stepsContainer.appendChild(header);
+    stepsContainer.prepend(header);
 
   } else {
-    text = document.getElementById("Kadesh-banner-text")
+    // text = 
   }
 
   text.innerText = e.target.value;
