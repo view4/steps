@@ -28,7 +28,7 @@ var fruitfulFunk = {
 
     window.location.href = "#kadesh-page";
     const kadesh = document.getElementById("kadesh");
-    kadesh.addEventListener("keyup", fruitfulFunk.handleBeliefDisplayBanner);
+    kadesh.addEventListener("keyup", (e) =>  fruitfulFunk.handleBeliefDisplayBanner(e.target.value));
     kadesh.addEventListener("keydown", fruitfulFunk.searchBeliefs);
     kadesh.addEventListener("focus", fruitfulFunk.searchBeliefs);
 
@@ -178,6 +178,7 @@ fruitfulFunk.loadBelief = async (beliefText) => {
   );
   const steps = await res.json();
   fruitfulFunk.fruitfullness(steps);
+  fruitfulFunk.handleBeliefDisplayBanner(beliefText)
 };
 
 fruitfulFunk.handleMultiAdd = (
@@ -246,13 +247,12 @@ fruitfulFunk.resetSteps = () => {
   }
 };
 
-fruitfulFunk.handleBeliefDisplayBanner = (e) => {
-  console.log("Being called");
-  console.log(e.target.value);
+fruitfulFunk.handleBeliefDisplayBanner = (value) => {
+  // console.log("Being called");
+  // console.log(e.target.value);
   let text = document.getElementById("Kadesh-banner-text");
   const stepsContainer = document.getElementsByClassName("all-steps")[0];
-  console.log(!text);
-  if (!text && e.target.value.length) {
+  if (!text && value.length) {
     console.log("add banner here");
     const header = document.createElement("header");
     const textContainer = document.createElement("div");
@@ -261,11 +261,10 @@ fruitfulFunk.handleBeliefDisplayBanner = (e) => {
     header.append(textContainer);
     textContainer.append(text);
     stepsContainer.prepend(header);
-  } else {
-    // text =
   }
-  text.innerText = e.target.value;
+  text.innerText = value;
 };
+
 fruitfulFunk.setDownloadAnchor = () => {
   const a = document.getElementById("backup-anchor");
   const href = (isLocal ? localUrl : remoteUrl) + "backup";
