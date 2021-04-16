@@ -22,10 +22,16 @@ const isLocal = window.location.host.includes("localhost");
 const localUrl = "http://localhost:7000/";
 const remoteUrl = "http://167.99.85.228:7000/";
 
-
 var fruitfulFunk = {
   initialising: function () {
     fruitfulFunk.fetchBeliefs();
+
+    window.location.href = "#kadesh-page";
+    const kadesh = document.getElementById("kadesh");
+    kadesh.addEventListener("keyup", (e) =>  fruitfulFunk.handleBeliefDisplayBanner(e.target.value));
+    kadesh.addEventListener("keydown", fruitfulFunk.searchBeliefs);
+    kadesh.addEventListener("focus", fruitfulFunk.searchBeliefs);
+
     var fields = document.getElementsByClassName("participatory-fields");
     var buttons = document.getElementsByClassName("input-buttons");
     for (var i = 0; i < fields.length; i++) {
@@ -34,13 +40,6 @@ var fruitfulFunk = {
     }
 
     // fruitfulFunk.collectSteps();
-    window.location.href = "#kadesh-page";
-    document
-      .getElementById("kadesh")
-      .addEventListener("keydown", fruitfulFunk.searchBeliefs);
-    document
-      .getElementById("kadesh")
-      .addEventListener("focus", fruitfulFunk.searchBeliefs);
 
     const multiButtons = document.getElementsByClassName("multi-button");
     for (let i = 0; i < multiButtons.length; i++) {
@@ -50,6 +49,8 @@ var fruitfulFunk = {
         fruitfulFunk.handleMultiAdd(input, container, true)
       );
     }
+
+    fruitfulFunk.setDownloadAnchor();
   },
   // collectSteps: function () {
   //   allSteps = localStorage.getItem("allSteps");
@@ -172,9 +173,12 @@ fruitfulFunk.loadBelief = async (beliefText) => {
   fruitfulFunk.resetSteps();
 
   document.getElementById("kadesh").value = beliefText;
-  const res = await fetch(`${isLocal ? localUrl : remoteUrl}steps/${beliefText}`);
+  const res = await fetch(
+    `${isLocal ? localUrl : remoteUrl}steps/${beliefText}`
+  );
   const steps = await res.json();
   fruitfulFunk.fruitfullness(steps);
+  fruitfulFunk.handleBeliefDisplayBanner(beliefText)
 };
 
 fruitfulFunk.handleMultiAdd = (
@@ -185,6 +189,7 @@ fruitfulFunk.handleMultiAdd = (
   const value = input.value;
   const step = input.id;
   const span = document.createElement("span");
+  span.className = "multi-add-span";
 
   if (shouldAddValueToSteps) {
     steps[step].push(value);
@@ -192,6 +197,22 @@ fruitfulFunk.handleMultiAdd = (
   span.innerHTML = value;
   container.appendChild(span);
   input.value = "";
+
+  const x = document.createElement("span");
+  x.innerText = "x";
+  x.addEventListener("click", () =>
+    fruitfulFunk.handleMultiValueRemove(value, step, span)
+  );
+  span.appendChild(x);
+};
+fruitfulFunk.handleMultiValueRemove = (value, step, span) => {
+  console.log(value);
+  for (let i = 0; i < steps[step].length; i++) {
+    if (steps[step][i] == value) {
+      steps[step].splice(i, 1);
+    }
+  }
+  span.remove();
 };
 
 fruitfulFunk.fetchBeliefs = async () => {
@@ -211,18 +232,48 @@ fruitfulFunk.saveSteps = async (steps) => {
 
 fruitfulFunk.resetSteps = () => {
   const stepNames = Object.keys(steps);
-  stepNames.map(name => steps[name] = typeof steps[name] === "string" ? "": []);
+  stepNames.map(
+    (name) => (steps[name] = typeof steps[name] === "string" ? "" : [])
+  );
 
-  const multiContainers = document.getElementsByClassName("multi-inputs-container");
-  for(let i = 0; i< multiContainers.length; i++){
+  const multiContainers = document.getElementsByClassName(
+    "multi-inputs-container"
+  );
+  for (let i = 0; i < multiContainers.length; i++) {
     const container = multiContainers[i];
-    while(container.lastElementChild){
-      container.removeChild(container.lastElementChild)
+    while (container.lastElementChild) {
+      container.removeChild(container.lastElementChild);
     }
   }
+};
 
-}
+fruitfulFunk.handleBeliefDisplayBanner = (value) => {
+  // console.log("Being called");
+  // console.log(e.target.value);
+  let text = document.getElementById("Kadesh-banner-text");
+  const stepsContainer = document.getElementsByClassName("all-steps")[0];
+  if (!text && value.length) {
+    console.log("add banner here");
+    const header = document.createElement("header");
+    const textContainer = document.createElement("div");
+    text = document.createElement("span");
+    text.id = "Kadesh-banner-text";
+    header.append(textContainer);
+    textContainer.append(text);
+    stepsContainer.prepend(header);
+  }
+  text.innerText = value;
+};
 
+fruitfulFunk.setDownloadAnchor = () => {
+  const a = document.getElementById("backup-anchor");
+  const href = (isLocal ? localUrl : remoteUrl) + "backup";
+  const date = new Date().toDateString();
+  const fileName = `steps(${date}).json`;
+  a.setAttribute("href", href);
+  a.setAttribute("download", fileName);
+  a.setAttribute("title", "backup");
+};
 
 const postOptions = {
   method: "POST",
