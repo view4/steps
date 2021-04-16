@@ -278,18 +278,18 @@ textarea {
 
 @media only screen and (max-height: 810px) {
   .step-links {
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 0.9em;
   }
 }
 
 @media only screen and (max-height: 720px) {
-  /* body {
-    border: 10px solid #000;*/
   .links {
     top: 5vh;
   }
+
   .step-links {
-    height: 90vh;
+    font-size: 12px;
+    line-height: 0.72em;
   }
-  /* } */
 }
