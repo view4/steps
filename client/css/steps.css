@@ -19,7 +19,8 @@ div {
   top: 14vh;
   position: fixed;
   left: 3vw;
-  z-index:3;
+  z-index: 3;
+  min-height: 540px;
 }
 .step-links {
   opacity: 0.54;
@@ -30,11 +31,11 @@ div {
   justify-content: center;
   border-radius: 0.5em;
   padding: 0em 0.5em;
-  height: 36em;
+  height: 72vh;
   z-index: 7;
   transition: opacity 0.5s;
 }
-.step-links:hover{
+.step-links:hover {
   opacity: 0.9;
 }
 
@@ -50,7 +51,7 @@ div {
   font-weight: 500;
 }
 .all-steps {
-  width:100%;
+  width: 100%;
   height: 100vh;
   overflow: auto;
   flex-flow: wrap;
@@ -88,7 +89,7 @@ div {
   cursor: pointer;
 }
 
-.input-buttons:hover{
+.input-buttons:hover {
   opacity: 0.9;
 }
 
@@ -100,7 +101,6 @@ div {
 .stagename {
   margin-bottom: 0px;
 }
-
 
 textarea:focus {
   height: 36vh;
@@ -123,10 +123,9 @@ textarea:focus {
   font-size: 17px;
 }
 
-
 .multi-inputs-container > span > span {
   opacity: 0.36;
-  transition:opacity 0.36s;
+  transition: opacity 0.36s;
   cursor: pointer;
   margin-left: 18px;
   color: #777;
@@ -176,13 +175,13 @@ textarea:focus {
 
 .search-container {
   position: absolute;
-	border: 2px solid #cecece;
+  border: 2px solid #cecece;
   border-top: none;
   border-bottom: none;
   top: 1.8em;
   width: 90%;
   max-height: 10em;
-  overflow: auto; 
+  overflow: auto;
   font-size: 18px;
   margin-top: 0.5em;
 }
@@ -191,21 +190,20 @@ textarea:focus {
   display: none;
 }
 
-
-.search-child { 
-	border: 1px solid #cecece80;
+.search-child {
+  border: 1px solid #cecece80;
   font-size: 1.2em;
   font-size: 17px;
 }
-.search-child:last-child{
+.search-child:last-child {
   border-bottom-width: 3px;
 }
 
-.search-child:first-child{
+.search-child:first-child {
   border-top-width: 3px;
 }
 
-.search-child:hover{
+.search-child:hover {
   background: #cecece80;
 }
 
@@ -251,25 +249,24 @@ header {
   font-size: 1.8em;
   margin-top: -0.5em;
   line-height: 0.18em;
-
 }
 .options-button > a {
   text-decoration: none;
 }
 
-
-input, textarea {
+input,
+textarea {
   outline: none;
   border: none;
   font-size: 18px;
   border: 1px solid #cecece80;
-  box-shadow: 3px 3px 3px #cecece5c;  height: 1.8em;
+  box-shadow: 3px 3px 3px #cecece5c;
+  height: 1.8em;
   background: #fff;
   border-radius: 7px;
   font-weight: 500;
   padding-left: 0.5em;
   margin-top: 0.5em;
-
 }
 
 textarea {
@@ -277,4 +274,22 @@ textarea {
   transition: height 0.5s;
   position: absolute;
   z-index: 3;
+}
+
+@media only screen and (max-height: 810px) {
+  .step-links {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-height: 720px) {
+  /* body {
+    border: 10px solid #000;*/
+  .links {
+    top: 5vh;
+  }
+  .step-links {
+    height: 90vh;
+  }
+  /* } */
 }
